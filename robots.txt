@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+SITEMAP: https://mercury-training.com/sitemap.xml
+SITEMAP: https://mercury-training.com/ar/sitemap.xml

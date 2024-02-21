@@ -1,0 +1,108 @@
+
+*{
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+}
+  body{
+    padding: 0;
+    margin: 0;
+  }
+
+.all{
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.all .d1{
+  background-color: #f2f2f2;
+  width: 80%;
+  text-align: center;
+  background-image: url('certificate.M2.png');
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  -o-background-size: 100% 100%;
+  background-size: 100% 100%;
+  overflow: hidden;
+}
+
+.all .d1 h1{
+  color: #D7B846;
+  font-size: 5.5em;
+  margin-bottom:0;
+}
+
+.all .d1 h2{
+  color: #7c7c7c;
+  font-size: 2.5em;
+  margin-top:0;
+  margin-bottom:80px;
+}
+
+.all .d1 p{
+  color: #333;
+  font-size: 2em;
+  font-family: 'Arial', serif;
+  font-weight: bold;
+}
+
+.all .d1 .g{
+  color: #004B52;
+}
+
+.all .d1 .a img{
+  width:20%;
+  margin-top: 50px;
+  margin-right: 185px;
+}
+
+.all .d2{
+  background-color: #080;
+  width: 20%;
+  background-color: #004B52;
+  border-left: 15px solid #d4a90c;
+  overflow: hidden;
+}
+
+.all .d2 img{
+        width: 100%;
+        padding: 20%;
+    }
+
+@media  (max-width:768px){
+  .all{
+    flex-direction: column;
+  }
+  .all .d1{
+    order: 2;
+    width: 100%;
+    height: 100vh;
+    padding: 0% 3%;
+    }
+
+    .all .d1 h1{font-size: 3em;}
+
+    .all .d1 h2{
+      font-size: 1.5em;
+      margin-bottom:50px;
+    }
+
+    .all .d1 p{font-size: 1.2em;}
+
+  .all .d2{
+    order: 1;
+    width: 100%;
+    height:20%;
+    border-left: none;
+    border-bottom: 8px solid #d4a90c;
+  }
+
+  .all .d2 img{
+          width: 50%;
+          height: 100%;
+          padding: 18px;
+      }
+
+}

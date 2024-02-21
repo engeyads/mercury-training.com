@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <?php 
+            $category = null;
+            $page = null;
+            if (isset($eventsArray->result->events)) {
+                $categoryId = $eventsArray->result->events[0]->categoryId;
+                $category = new CallAPIv3($scope = 'resource=categories&id='.$categoryId.'&with_keyword_description=true',$method = 'GET'); 
+                $category = $category->result->categories[0];
+                if (isset($_GET['page'])) {
+                    $page = ', Page ' . $_GET['page'];
+                }
+            }
+        ?> 
+        <meta name="description" content="<?php echo isset($category) ? $category->description . $page : 'No Events' ?>">
+        <meta name="keywords" content="<?php echo  isset($category) ? $category->keyword : 'No Events' ?>">
+        <meta property="og:title" content="<?php echo $category->name ?>">
+        <meta property="og:locale" content="en-SA">
+        <meta property="og:type" content="website">
+        <meta property="og:description" content="<?php echo isset($category) ? $category->description . $page : 'No Events' ?>">
+        <meta property="og:url" content="<?php echo $systemUrl.$categorySlugs[$category->id] ?>">
+        <meta property="og:site_name" content="<?php echo $centerName; ?>">
+        <?php include('layouts/head.php'); ?>
+    </head>
+<body itemscope itemtype="https://schema.org/WebPage">
+    
+    <?php
+        include('layouts/header.php');
+    ?>
+
+<div class="cat-header-section">
+    <div class="container">
+        <div class="cat-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <?php echo showBreadCrumbs (); ?>
+                </div>
+                <div class="col-sm-12">
+                    <h1 itemprop="name" content="<?php echo $centerName . ' ' . $activeCat; ?>" title="<?php echo $centerName . ' ' . $activeCat; ?>" class="categroy-title"><?php echo $activeCat ?></h1>
+                    <p class="cat-desc">Explore our latest lineup of upcoming training courses and events, designed to empower your journey towards success.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+    if (isset($eventsArray->result->events) && (count($eventsArray->result->events) > 0)) { 
+        echo '<div class="category-content" itemscope itemtype="https://schema.org/Course">';
+    } else {
+        echo '<div class="category-content">';
+    }
+?>
+    <div class="container p-3">
+        <div class="row">
+            <div class="col-md-9">
+
+            <?php
+                if (isset($eventsArray->result->events) && (count($eventsArray->result->events) > 0)) {
+                    foreach ($eventsArray->result->events as $value) {
+                        // $startDate = date_create($value->startDate);
+                        // $endDate = date_create($value->endDate);
+                        $dates = generateEventFormatedDate($value->startDate,$value->endDate);
+                    ?>
+                <div class="cat-list">
+                    <div class="p-2">
+                        <a class="color-base" title="<?php echo "$centerName $value->name - $value->city - $dates #$value->courseId"."_".$value->id; ?>" <?php
+                            if($value->name != null && $value->categoryId !=null && $eventPage !=''){
+                                echo 'href="'.$systemUrl.$eventPage.'/'.$value->id.'.html"';            
+                            }
+                            ?>>  
+                            <div class="col-md-12">
+                                <h2 itemprop="name">
+                                    <?php echo $value->name;?> - <span style="font-size:15px;">(<?php echo $value->courseId.'_'.$value->id ?>)</span>
+                                </h2>
+                            </div>
+                        
+                        <textarea itemprop="description" hidden content="<?php echo $value->overview;?>"></textarea>
+                        <?php
+                           
+                        ?>
+                            <div class="events-list p-3 course-events">
+                                <?php
+                                    
+                                        // $startDate = date_create($value->startDate);
+                                        // $endDate = date_create($value->endDate);
+                                ?>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <i class="fa fa-globe" aria-hidden="true"></i>
+                                            <span><?php echo $value->city; ?></span>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <i class="far fa-calendar" aria-hidden="true"></i>
+                                            <span>
+                                                <?php echo $dates ?>                                                        
+                                            </span>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <span><?php echo $value->price . ' ' . $value->currency; ?></span>
+                                        </div>
+                                    </div>
+                                </a>
+                                <?php
+                                        
+                                ?>
+                                    <!-- <a href="<?php //echo $systemUrl.$coursePage.'/'.$value->courseId.'.html' ?>" class="browse-btn">Browse for more events...</a> -->
+                            </div>
+                        <?php
+                            
+                        ?>
+
+
+
+
+                    </div>
+                </div>
+                <?php
+                    }
+                }else {
+                    echo '<h3 style="font-size: 24px;">No Events are available.</h3>';
+                }
+                echo $eventsArray->pagination();
+                ?>
+            </div>
+            <div class="col-sm-3">
+                <div class="cat-sidebar">
+                    <h4 class="title-header"> <i class="fas fa-th-list" aria-hidden="true"></i> Programs Category</h4>
+                    <ul class="sidebar-menu">
+
+                    <?php
+                        $categoriesArray = new CallAPIv3($scope = 'resource=categories',$method = 'GET'); 
+                        if (isset($categoriesArray->result->categories) && (count($categoriesArray->result->categories) > 0)) {
+                            $categories = $categoriesArray->result->categories;
+                            ksort($categories);
+                            foreach ($categories as $value) {
+                    ?>
+                        <li><a href="<?php echo $systemUrl.$categorySlugs[$value->id]; ?>"  title="<?php echo $centerName . ' ' . $value->name; ?>">
+                            <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                            <?php echo $value->name; ?></a>
+                        </li>
+                    <?php
+                            }
+                        }
+                    ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+    include('layouts/footer.php');
+?>
+</body>

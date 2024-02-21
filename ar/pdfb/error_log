@@ -1,0 +1,1 @@
+[03-May-2022 00:32:46 UTC] PHP Fatal error:  Call to undefined function curl_init() in /home/mercurytraining/public_html/includes/general.php on line 7
